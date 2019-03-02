@@ -1,24 +1,25 @@
 # https://community.topcoder.com/stat?c=problem_statement&pm=15211&rd=17370
 
-# function calculates all divisors greater than 1 of input
-# total of sequence is passed as input
+# Function calculates all divisors greater than 1 of the sum of the input list.
+# Sequence is passed in as input.
 def calc_divisors(seq):
 
     seq_sum = sum(seq)
-
     divisors = []
-
     for i in range(2,seq_sum):
         if seq_sum % i == 0:
             divisors.append(i)
     
     return divisors
 
-# generator 
+# Generator takes two inputs: sequence 'A' and list of potential GCDs for that
+# sequence. Yields largest GCDs of sequence A.
 def try_divisors(A,divisors):
 
     global maxDivisor
 
+    # If largest succesful divisor is greater than higher than the highet we have
+    # found so far, then update.
     if A == []:
         if max(divisors) > maxDivisor:
             maxDivisor = max(divisors)
@@ -26,11 +27,15 @@ def try_divisors(A,divisors):
 
     n = len(A)
     
+    # Cycle through combinations of A[0] + A[i] and see whether the sum is divisible
+    # by any number in divisors list. Add succesful divisors to newDivisors list.
+    # If no succcesful divisors then yield 1. Otherwise try out succesful divisors
+    # on remainder of the list.
     for i in range(1,n):
         newDivisors = []
         for divisor in divisors:
             if divisor > maxDivisor and (A[0] + A[i]) % divisor == 0:
-                    newDivisors.append(divisor)                
+                    newDivisors.append(divisor)
         if newDivisors == []:
             yield 1
         else:
